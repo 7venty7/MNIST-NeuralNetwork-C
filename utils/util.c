@@ -20,16 +20,15 @@ void vec_add(double *activations, double *biases, int len) {
 }
 
 void load_training_data(data *training_data) {
-  printf("hello\n");
   FILE *training_images;
   FILE *training_labels;
 
-  training_images = fopen("../training_images", "rb");
-  training_labels = fopen("../training_labels", "rb");
+  training_images = fopen("train-images.idx3-ubyte", "rb");
+  training_labels = fopen("train-labels.idx1-ubyte", "rb");
 
-  if (training_images == NULL || training_data == NULL) {
+  if (training_images == NULL || training_labels == NULL) {
     printf("Error loading files\n");
-    return;
+    exit(1);
   }
 
   uint32_t magic_n1;
@@ -40,6 +39,19 @@ void load_training_data(data *training_data) {
 
   printf("Magic number of training image file: %d\n", magic_n1);
   printf("Magic number of training label file: %d\n", magic_n2);
+
+  fseek(training_images, 16, SEEK_CUR);
+  fseek(training_labels, 8, SEEK_CUR);
+
+  int index = 0;
+  uint8_t label = 0;
+
+  while (index < TRAINING_SETS) {
+    fread(training_data[index].image, sizeof(uint8_t), INPUTSIZE, training_images);
+    fread(&training_data[index].label, sizeof(uint8_t), 1, training_labels);
+
+    index++;
+  }
 
   fclose(training_images);
   fclose(training_labels);

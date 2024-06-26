@@ -4,7 +4,7 @@
 #define N_HIDDENLAYERS 2
 #define N_NODES 16
 #define N_OUTPUT 10
-#define TRAINING_SETS 60000
+#define TRAINING_SETS 5000
 
 typedef struct {
   uint8_t image[INPUTSIZE];
