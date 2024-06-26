@@ -1,7 +1,7 @@
 CC = gcc
 PRIMARY = neural_network
 SECONDARY = utils/util
-FLAGS = -lm -lutils
+FLAGS = -lm -fsanitize=address
 
-train: ${PRIMARY}
-	${CC} ${PRIMARY}.c ${SECONDARY}.c ${FLAGS} -o train
+train:
+	${CC} ${PRIMARY}.c ${SECONDARY}.c -o train ${FLAGS}

@@ -5,10 +5,13 @@
 #include "utils/utils.h"
 
 int main(void) {
+  printf("Hello\n");
   const double learning_rate = 0.1f;
 
   // loading data
+  printf("Hello\n");
   data training_data[TRAINING_SETS];
+  printf("Hello\n");
 
   load_training_data(training_data);
 

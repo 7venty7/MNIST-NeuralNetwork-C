@@ -23,19 +23,19 @@ void load_training_data(data *training_data) {
   FILE *training_images;
   FILE *training_labels;
 
-  training_images = fopen("training_images", "rb");
-  training_data = fopen("training_labels", "rb");
+  training_images = fopen("../training_images", "rb");
+  training_labels = fopen("../training_labels", "rb");
 
   if (training_images == NULL || training_data == NULL) {
     printf("Error loading files\n");
     return;
   }
 
-  int magic_n1;
-  int magic_n2;
+  uint32_t magic_n1;
+  uint32_t magic_n2;
 
-  fread(&magic_n1, sizeof(int), 1, training_images);
-  fread(&magic_n2, sizeof(int), 1, training_labels);
+  fread(&magic_n1, sizeof(uint32_t), 1, training_images);
+  fread(&magic_n2, sizeof(uint32_t), 1, training_labels);
 
   printf("Magic number of training image file: %d\n", magic_n1);
   printf("Magic number of training label file: %d\n", magic_n2);
