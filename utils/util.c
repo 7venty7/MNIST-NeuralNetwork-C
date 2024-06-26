@@ -20,6 +20,7 @@ void vec_add(double *activations, double *biases, int len) {
 }
 
 void load_training_data(data *training_data) {
+  printf("hello\n");
   FILE *training_images;
   FILE *training_labels;
 
