@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
+#include <sys/time.h>
 #include "utils.h"
 
 void matrix_vector_mult(double **weights, double *activations, double *nxt_layer, int rows, int cols) {
@@ -19,40 +21,59 @@ void vec_add(double *activations, double *biases, int len) {
   }
 }
 
-void load_training_data(data *training_data) {
-  FILE *training_images;
-  FILE *training_labels;
+double init_weight() {
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  srand(tv.tv_usec * tv.tv_sec);
 
-  training_images = fopen("train-images.idx3-ubyte", "rb");
-  training_labels = fopen("train-labels.idx1-ubyte", "rb");
+  return ((double) rand() / (double) RAND_MAX);
+}
 
-  if (training_images == NULL || training_labels == NULL) {
-    printf("Error loading files\n");
-    exit(1);
+double relu(double x) {
+  if (x < 0) {
+    return 0;
   }
 
-  uint32_t magic_n1;
-  uint32_t magic_n2;
+  return x;
+}
 
-  fread(&magic_n1, sizeof(uint32_t), 1, training_images);
-  fread(&magic_n2, sizeof(uint32_t), 1, training_labels);
+double d_relu(double x) {
+  if (x > 0) {
+    return 1;
+  }
 
-  printf("Magic number of training image file: %d\n", magic_n1);
-  printf("Magic number of training label file: %d\n", magic_n2);
+  return 0;
+}
 
-  fseek(training_images, 16, SEEK_CUR);
-  fseek(training_labels, 8, SEEK_CUR);
+void shuffle(double *arr, size_t len) {
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  srand48(tv.tv_usec * tv.tv_sec);
 
+  if (len > 1) {
+    for (int i = len - 1; i >= 0; i--) {
+      int j = (unsigned int) (drand48() * (i + 1));
+      double tmp = arr[j];
+      arr[j] = arr[i];
+      arr[i] = tmp;
+    }
+  }
+}
+
+void load_training_data(data *training_data, FILE *training_images, FILE *training_labels) {
+  static unsigned long int offset = 0;
   int index = 0;
-  uint8_t label = 0;
 
-  while (index < TRAINING_SETS) {
+  fseek(training_images, 16 + (offset * INPUTSIZE), SEEK_CUR);
+  fseek(training_labels, 8 + offset, SEEK_CUR);
+
+  while (index < BATCH_SIZE) {
     fread(training_data[index].image, sizeof(uint8_t), INPUTSIZE, training_images);
     fread(&training_data[index].label, sizeof(uint8_t), 1, training_labels);
 
     index++;
   }
 
-  fclose(training_images);
-  fclose(training_labels);
+  offset++;
+  offset %= TRAINING_SETS;
 }

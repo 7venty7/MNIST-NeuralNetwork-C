@@ -4,18 +4,27 @@
 #define N_HIDDENLAYERS 2
 #define N_NODES 16
 #define N_OUTPUT 10
-#define TRAINING_SETS 5000
+#define TRAINING_SETS 60000
+#define BATCH_SIZE 100
 
 typedef struct {
   uint8_t image[INPUTSIZE];
   uint8_t label;
 } data;
 
+double relu(double x);
+
+double d_relu(double x);
+
+double init_weight();
+
+void shuffle(double *arr, size_t len);
+
 /*
  * load_training_data
  * Load the training data from the MNIST files
  */
-void load_training_data(data *training_data);
+void load_training_data(data *training_data, FILE *training_images, FILE *training_labels);
 
 /*
  * matrix_vector_mult
