@@ -5,5 +5,9 @@ This is not a serious project with any real application, but purely for the sake
 The model contains 1 hidden layer with 300 neurons and currently achieves a ~95% accuracy on test data
 
 # Usage
-- The binary executable to train the network can be produced by running "make"
+- The binary executable to train the network can be produced by running "make train"
 - Running this binary: "./train", will train the network and produce 4 csv files corresponding to matrices associated with weights and biases
+
+### TODO:
+- Documentation
+- Support importing weights and biases from output csv for prediction
