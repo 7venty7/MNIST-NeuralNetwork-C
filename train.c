@@ -174,10 +174,73 @@ int main(void) {
 
     printf("Accuracy of model: %lf\n", (double) correct / N_TESTING);
 
+    FILE *hidden_weights_out;
+    FILE *hidden_bias_out;
+    FILE *output_weights_out;
+    FILE *output_bias_out;
+
+    hidden_weights_out = fopen("hidden_layer_weights.csv", "w");
+    hidden_bias_out = fopen("hidden_layer_bias.csv", "w");
+    output_weights_out = fopen("output_layer_weights.csv", "w");
+    output_bias_out = fopen("output_layer_bias.csv", "w");
+
+    if (hidden_weights_out == NULL || hidden_bias_out == NULL || output_weights_out == NULL || output_bias_out == NULL) {
+        printf("Error creating output files\n");
+        exit(1);
+    }
+
+    for (int i = 0; i < N_NODES; i++) {
+        for (int j = 0; j < INPUTSIZE; j++) {
+            fprintf(hidden_weights_out, "%lf", hidden_layer_weights->values[i][j]);
+
+            if (j != INPUTSIZE - 1) {
+                fprintf(hidden_weights_out, ", ");
+            }
+        }
+
+        if (i != N_NODES - 1) {
+            fprintf(hidden_weights_out, "\n");
+        }
+    }
+
+    for (int i = 0; i < N_NODES; i++) {
+        fprintf(hidden_bias_out, "%lf", hidden_layer_bias->values[i][0]);
+
+        if (i != N_NODES - 1) {
+            fprintf(hidden_bias_out, "\n");
+        }
+    }
+
+    for (int i = 0; i < N_OUTPUT; i++) {
+        for (int j = 0; j < N_NODES; j++) {
+            fprintf(output_weights_out, "%lf", output_layer_weights->values[i][j]);
+
+            if (j != N_NODES - 1) {
+                fprintf(output_weights_out, ", ");
+            }
+        }
+
+        if (i != N_OUTPUT - 1) {
+            fprintf(output_weights_out, "\n");
+        }
+    }
+
+    for (int i = 0; i < N_OUTPUT; i++) {
+        fprintf(output_bias_out, "%lf", output_layer_bias->values[i][0]);
+
+        if (i != N_OUTPUT - 1) {
+            fprintf(output_bias_out, "\n");
+        }
+    }
+
     fclose(training_images);
     fclose(training_labels);
     fclose(testing_images);
     fclose(testing_labels);
+    fclose(hidden_weights_out);
+    fclose(hidden_bias_out);
+    fclose(output_weights_out);
+    fclose(output_bias_out);
 
     free_matrix(hidden_layer_weights);
     free_matrix(hidden_layer_bias);
