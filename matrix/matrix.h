@@ -1,7 +1,7 @@
 typedef struct {
-  int rows;
-  int cols;
-  double **values;
+    int rows;
+    int cols;
+    double **values;
 } Matrix;
 
 Matrix *matrix_transpose(Matrix *m);
