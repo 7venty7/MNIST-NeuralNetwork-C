@@ -1,7 +1,8 @@
 CC = gcc
-PRIMARY = neural_network
-SECONDARY = utils/util
+PRIMARY = train
+MATRIX = matrix/matrix
+NNET = nnet/nnet
 FLAGS = -lm -fsanitize=address -g -Wall
 
 train:
-	${CC} ${PRIMARY}.c ${SECONDARY}.c -o train ${FLAGS}
+	${CC} ${PRIMARY}.c ${NNET}.c ${MATRIX}.c -o train ${FLAGS}
