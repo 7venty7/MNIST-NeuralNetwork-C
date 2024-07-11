@@ -10,7 +10,7 @@ int main(void) {
     gettimeofday(&tv, NULL);
     srand(tv.tv_usec * tv.tv_sec);
 
-    const double learning_rate = 0.05f;
+    const double learning_rate = 0.2f;
 
     // load data from files
 
@@ -194,7 +194,7 @@ int main(void) {
             fprintf(hidden_weights_out, "%lf", hidden_layer_weights->values[i][j]);
 
             if (j != INPUTSIZE - 1) {
-                fprintf(hidden_weights_out, ", ");
+                fprintf(hidden_weights_out, ",");
             }
         }
 
@@ -216,7 +216,7 @@ int main(void) {
             fprintf(output_weights_out, "%lf", output_layer_weights->values[i][j]);
 
             if (j != N_NODES - 1) {
-                fprintf(output_weights_out, ", ");
+                fprintf(output_weights_out, ",");
             }
         }
 
